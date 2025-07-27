@@ -10,12 +10,12 @@ from mcp import types
 from mcp.server import NotificationOptions
 from mcp.server.models import InitializationOptions
 
-from models.paper import Paper, SearchRequest
-from services.arxiv_client import ArxivClient
-from services.cache_manager import CacheManager
-from services.pdf_processor import PDFProcessor
-from services.relevance_ranker import RelevanceRanker
-from utils.text_utils import format_author_list, truncate_text
+from src.models.paper import Paper, SearchRequest
+from src.services.arxiv_client import ArxivClient
+from src.services.cache_manager import CacheManager
+from src.services.pdf_processor import PDFProcessor
+from src.services.relevance_ranker import RelevanceRanker
+from src.utils.text_utils import format_author_list, truncate_text
 from config.settings import settings
 
 # Configure logging

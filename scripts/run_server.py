@@ -1,10 +1,18 @@
 import asyncio
 import sys
 import logging
+import os
+from pathlib import Path
 from mcp.server import NotificationOptions
 from mcp.server.models import InitializationOptions
 from mcp import stdio_server
 from config.settings import settings
+
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Import the server app
+from src.server import app
 
 logger = logging.getLogger(__name__)
 
