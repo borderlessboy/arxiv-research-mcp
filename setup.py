@@ -5,14 +5,15 @@ from pathlib import Path
 
 # Read the contents of README file
 this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text(encoding='utf-8')
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 # Read requirements
 requirements_path = this_directory / "requirements.txt"
-with open(requirements_path, 'r', encoding='utf-8') as f:
+with open(requirements_path, "r", encoding="utf-8") as f:
     requirements = [
-        line.strip() for line in f 
-        if line.strip() and not line.startswith('#') and not line.startswith('-')
+        line.strip()
+        for line in f
+        if line.strip() and not line.startswith("#") and not line.startswith("-")
     ]
 
 # Development requirements
@@ -30,19 +31,16 @@ dev_requirements = [
 # Optional dependencies for different use cases
 extras_require = {
     "dev": dev_requirements,
-    
     "api": [
         "fastapi>=0.100.0",
         "uvicorn[standard]>=0.23.0",
         "python-multipart>=0.0.6",
     ],
-    
     "dashboard": [
         "streamlit>=1.28.0",
         "plotly>=5.15.0",
         "altair>=5.0.0",
     ],
-    
     "jupyter": [
         "jupyter>=1.0.0",
         "ipython>=8.0.0",
@@ -52,25 +50,21 @@ extras_require = {
         "wordcloud>=1.9.0",
         "networkx>=3.0.0",
     ],
-    
     "bots": [
         "slack-bolt>=1.18.0",
         "discord.py>=2.3.0",
         "python-telegram-bot>=20.0.0",
     ],
-    
     "langchain": [
         "langchain>=0.1.0",
         "langchain-openai>=0.1.0",
         "langchain-anthropic>=0.1.0",
         "langchain-community>=0.0.20",
     ],
-    
     "redis": [
         "redis>=4.5.0",
         "aioredis>=2.0.0",
     ],
-    
     "advanced": [
         "spacy>=3.6.0",
         "transformers>=4.30.0",
@@ -85,16 +79,16 @@ extras_require["all"] = list(set(sum(extras_require.values(), [])))
 setup(
     name="arxiv-research-mcp",
     version="1.0.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="arXiv Research MCP Team",
+    author_email="contact@arxiv-research-mcp.com",
     description="A comprehensive MCP server for searching and analyzing academic papers from arXiv",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/arxiv-research-mcp",
+    url="https://github.com/arxiv-research-mcp/arxiv-research-mcp",
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/arxiv-research-mcp/issues",
-        "Source": "https://github.com/yourusername/arxiv-research-mcp",
-        "Documentation": "https://github.com/yourusername/arxiv-research-mcp/wiki",
+        "Bug Reports": "https://github.com/arxiv-research-mcp/arxiv-research-mcp/issues",
+        "Source": "https://github.com/arxiv-research-mcp/arxiv-research-mcp",
+        "Documentation": "https://github.com/arxiv-research-mcp/arxiv-research-mcp/wiki",
     },
     packages=find_packages(exclude=["tests*"]),
     classifiers=[
@@ -137,47 +131,59 @@ setup(
     },
     zip_safe=False,
     keywords=[
-        "arxiv", "research", "papers", "academic", "search", "mcp", "server",
-        "machine-learning", "nlp", "pdf", "text-processing", "relevance-ranking",
-        "langchain", "streamlit", "jupyter", "api", "claude", "ai", "assistant"
+        "arxiv",
+        "research",
+        "papers",
+        "academic",
+        "search",
+        "mcp",
+        "server",
+        "machine-learning",
+        "nlp",
+        "pdf",
+        "text-processing",
+        "relevance-ranking",
+        "langchain",
+        "streamlit",
+        "jupyter",
+        "api",
+        "claude",
+        "ai",
+        "assistant",
     ],
-    
     # Additional metadata
     license="MIT",
     platforms=["any"],
-    
     # Testing configuration
     test_suite="tests",
     tests_require=dev_requirements,
-    
     # Options for different environments
     options={
         "bdist_wheel": {
             "universal": False,
         },
     },
-    
     # Minimum versions for critical dependencies
-    python_requires=">=3.8",
     
     # Additional configuration for development
     cmdclass={},
-    
     # Data files (if any)
     data_files=[
         ("examples", ["examples/claude_config.json", "examples/example_usage.py"]),
     ],
 )
 
+
 # Post-install message
 def post_install_message():
     """Display post-installation message."""
-    print("""
+    print(
+        """
 🎉 arXiv Research MCP Server installed successfully!
 
 🚀 Quick Start:
 1. Set up your environment:
-   cp .env.example .env
+   # cp .env.example .env  # Create .env file with your configuration
    
 2. Run the MCP server:
    python scripts/run_server.py
@@ -186,7 +192,7 @@ def post_install_message():
    streamlit run integrations/streamlit_app.py
 
 📚 Documentation:
-- GitHub: https://github.com/yourusername/arxiv-research-mcp
+- GitHub: https://github.com/arxiv-research-mcp/arxiv-research-mcp
 - Examples: See the 'examples/' directory
 
 🔧 Optional Dependencies:
@@ -196,10 +202,13 @@ def post_install_message():
 - For everything: pip install "arxiv-research-mcp[all]"
 
 ❓ Need help? Check the README.md or open an issue on GitHub.
-""")
+"""
+    )
+
 
 if __name__ == "__main__":
     import sys
+
     if "install" in sys.argv:
         # Run setup
         setup()

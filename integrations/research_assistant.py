@@ -154,6 +154,6 @@ if __name__ == "__main__":
                 years_back=2,
                 include_full_text=False
             )
-            print(results)
+            logger.info(results)
     
     asyncio.run(main())

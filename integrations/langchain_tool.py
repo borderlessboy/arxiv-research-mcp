@@ -316,7 +316,7 @@ class MultiTopicResearchAgent:
         
         # Research each topic
         for topic in topics:
-            print(f"Researching: {topic}")
+            logger.info(f"Researching: {topic}")
             result = self.base_agent.research_topic(
                 f"{topic} related to {focus_question}",
                 detailed=False
@@ -389,27 +389,27 @@ if __name__ == "__main__":
     # Example 1: Basic research agent
     agent = ResearchAgent()
     
-    print("=== Basic Research Example ===")
+    logger.info("=== Basic Research Example ===")
     result = agent.research_topic("quantum machine learning")
-    print(result)
+    logger.info(result)
     
-    print("\n=== Topic Comparison Example ===")
+    logger.info("\n=== Topic Comparison Example ===")
     result = agent.compare_topics(
         ["transformer models", "graph neural networks", "reinforcement learning"],
         focus_area="computer vision"
     )
-    print(result)
+    logger.info(result)
     
-    print("\n=== Trend Analysis Example ===")
+    logger.info("\n=== Trend Analysis Example ===")
     result = agent.trend_analysis("federated learning", years_back=2)
-    print(result)
+    logger.info(result)
     
     # Example 2: Multi-topic research agent
     multi_agent = MultiTopicResearchAgent()
     
-    print("\n=== Interdisciplinary Analysis Example ===")
+    logger.info("\n=== Interdisciplinary Analysis Example ===")
     result = multi_agent.interdisciplinary_analysis(
         ["quantum computing", "machine learning", "cryptography"],
         "data privacy and security"
     )
-    print(result)
+    logger.info(result)

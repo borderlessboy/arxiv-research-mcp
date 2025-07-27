@@ -72,7 +72,7 @@ class CacheManager:
             try:
                 if os.path.exists(cache_file):
                     os.remove(cache_file)
-            except:
+            except Exception:
                 pass
                 
         return None
