@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "arxiv-research": {
+      "command": "python",
+      "args": ["scripts/run_server.py"],
+      "env": {
+        "PYTHONPATH": "."
+      },
+      "cwd": ".",
+      "description": "arXiv Research MCP Server for searching academic papers"
+    }
+  },
+  "logging": {
+    "level": "INFO"
+  }
+} 

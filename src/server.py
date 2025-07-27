@@ -34,9 +34,15 @@ cache_manager = CacheManager()
 pdf_processor = PDFProcessor()
 relevance_ranker = RelevanceRanker()
 
+# Initialize services
+arxiv_client = ArxivClient()
+cache_manager = CacheManager()
+pdf_processor = PDFProcessor()
+relevance_ranker = RelevanceRanker()
+
 
 @app.list_tools()
-async def handle_list_tools() -> List[types.Tool]:
+async def list_tools() -> list[types.Tool]:
     """List available tools."""
     return [
         types.Tool(
@@ -51,21 +57,14 @@ async def handle_list_tools() -> List[types.Tool]:
                     },
                     "max_results": {
                         "type": "integer",
-                        "default": settings.DEFAULT_MAX_RESULTS,
-                        "minimum": 1,
-                        "maximum": 50,
                         "description": "Maximum number of papers to return"
                     },
                     "years_back": {
                         "type": "integer",
-                        "default": settings.DEFAULT_YEARS_BACK,
-                        "minimum": 1,
-                        "maximum": 20,
                         "description": "Number of years back to search"
                     },
                     "include_full_text": {
                         "type": "boolean",
-                        "default": True,
                         "description": "Whether to include full paper text"
                     }
                 },
@@ -93,19 +92,28 @@ async def handle_list_tools() -> List[types.Tool]:
     ]
 
 
-
 @app.call_tool()
-async def handle_call_tool(name: str, arguments: Dict) -> List[types.TextContent]:
+async def call_tool(
+    name: str,
+    arguments: dict
+) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
     """Handle tool calls."""
     
-    if name == "search_arxiv_papers":
-        return await search_arxiv_papers_tool(arguments)
-    elif name == "clear_cache":
-        return await clear_cache_tool()
-    elif name == "get_cache_stats":
-        return await get_cache_stats_tool()
-    else:
-        raise ValueError(f"Unknown tool: {name}")
+    try:
+        if name == "search_arxiv_papers":
+            return await search_arxiv_papers_tool(arguments)
+        elif name == "clear_cache":
+            return await clear_cache_tool()
+        elif name == "get_cache_stats":
+            return await get_cache_stats_tool()
+        else:
+            raise ValueError(f"Tool not found: {name}")
+    except Exception as e:
+        logger.error(f"Error in tool call {name}: {e}")
+        return [types.TextContent(
+            type="text",
+            text=f"Error executing tool {name}: {str(e)}"
+        )]
 
 
 async def search_arxiv_papers_tool(arguments: Dict) -> List[types.TextContent]:

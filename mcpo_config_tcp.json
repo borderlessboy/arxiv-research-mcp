@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "arxiv-research-tcp": {
+      "command": "python",
+      "args": ["scripts/run_server_tcp.py", "--host", "localhost", "--port", "8080"],
+      "env": {
+        "PYTHONPATH": "."
+      },
+      "cwd": ".",
+      "description": "arXiv Research MCP Server (TCP) for searching academic papers"
+    }
+  },
+  "logging": {
+    "level": "INFO"
+  }
+} 
