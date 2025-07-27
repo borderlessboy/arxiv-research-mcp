@@ -32,11 +32,13 @@ class Paper(BaseModel):
     doi: Optional[str] = None
     journal: Optional[str] = None
     
-    class Config:
-        json_encoders = {
+    model_config = {
+        "json_encoders": {
             datetime: lambda dt: dt.isoformat(),
             HttpUrl: str
-        }
+        },
+        "arbitrary_types_allowed": True
+    }
 
 
 class SearchRequest(BaseModel):

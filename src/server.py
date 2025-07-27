@@ -10,12 +10,12 @@ from mcp import types
 from mcp.server import NotificationOptions
 from mcp.server.models import InitializationOptions
 
-from .models.paper import Paper, SearchRequest
-from .services.arxiv_client import ArxivClient
-from .services.cache_manager import CacheManager
-from .services.pdf_processor import PDFProcessor
-from .services.relevance_ranker import RelevanceRanker
-from .utils.text_utils import format_author_list, truncate_text
+from models.paper import Paper, SearchRequest
+from services.arxiv_client import ArxivClient
+from services.cache_manager import CacheManager
+from services.pdf_processor import PDFProcessor
+from services.relevance_ranker import RelevanceRanker
+from utils.text_utils import format_author_list, truncate_text
 from config.settings import settings
 
 # Configure logging
@@ -155,6 +155,12 @@ async def search_arxiv_papers_tool(arguments: Dict) -> List[types.TextContent]:
         
         # Select top papers
         top_papers = relevance_ranker.select_top_papers(ranked_papers, search_request.max_results)
+        
+        if not top_papers:
+            return [types.TextContent(
+                type="text",
+                text=f"No relevant papers found for query: '{search_request.query}' after relevance ranking"
+            )]
         
         # Extract full text if requested
         if search_request.include_full_text:

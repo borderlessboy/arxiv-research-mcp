@@ -10,8 +10,8 @@ import feedparser
 import httpx
 from asyncio_throttle import Throttler
 
-from ..models.paper import Paper
-from ..utils.date_utils import parse_arxiv_date
+from models.paper import Paper
+from utils.date_utils import parse_arxiv_date
 from config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class ArxivClient:
         
         try:
             async with self.throttler:
-                async with httpx.AsyncClient(timeout=self.timeout) as client:
+                async with httpx.AsyncClient(timeout=self.timeout, follow_redirects=True) as client:
                     response = await client.get(self.base_url, params=params)
                     response.raise_for_status()
                     
@@ -89,7 +89,7 @@ class ArxivClient:
                     published=parse_arxiv_date(entry.published),
                     summary=entry.summary.strip().replace('\n', ' '),
                     url=entry.link,
-                    pdf_url=entry.link.replace('/abs/', '/pdf/') + '.pdf',
+                    pdf_url=entry.link.replace('/abs/', '/pdf/'),
                     categories=[tag.term for tag in entry.tags],
                     arxiv_id=arxiv_id
                 )

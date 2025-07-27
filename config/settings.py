@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     SERVER_VERSION: str = "1.0.0"
 
     # arXiv API Configuration
-    ARXIV_API_BASE_URL: str = "http://export.arxiv.org/api/query"
+    ARXIV_API_BASE_URL: str = "https://export.arxiv.org/api/query"
     ARXIV_REQUEST_TIMEOUT: int = 30
     ARXIV_MAX_RETRIES: int = 3
     ARXIV_RETRY_DELAY: float = 1.0
@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     # Relevance Ranking
     TFIDF_MAX_FEATURES: int = 1000
     TFIDF_NGRAM_RANGE: tuple = (1, 2)
-    MIN_RELEVANCE_SCORE: float = 0.1
+    MIN_RELEVANCE_SCORE: float = 0.01
 
     # Caching
     CACHE_ENABLED: bool = True
@@ -42,9 +42,10 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = {
+        "env_file": ".env",
+        "case_sensitive": True
+    }
 
 
 settings = Settings()

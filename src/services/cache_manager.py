@@ -11,7 +11,7 @@ from typing import Dict, List, Optional
 import aiofiles
 from pydantic import BaseModel
 
-from ..models.paper import Paper
+from models.paper import Paper
 from config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -125,6 +125,9 @@ class CacheManager:
             
         cleared_count = 0
         try:
+            if not os.path.exists(self.cache_dir):
+                return 0
+                
             for filename in os.listdir(self.cache_dir):
                 if filename.endswith('.json'):
                     file_path = os.path.join(self.cache_dir, filename)
@@ -145,6 +148,9 @@ class CacheManager:
             
         cleaned_count = 0
         try:
+            if not os.path.exists(self.cache_dir):
+                return 0
+                
             for filename in os.listdir(self.cache_dir):
                 if filename.endswith('.json'):
                     file_path = os.path.join(self.cache_dir, filename)
@@ -179,6 +185,9 @@ class CacheManager:
             return {"enabled": False}
             
         try:
+            if not os.path.exists(self.cache_dir):
+                return {"enabled": True, "total_entries": 0, "total_size_mb": 0, "cache_dir": self.cache_dir, "ttl_hours": self.ttl_hours}
+                
             cache_files = [f for f in os.listdir(self.cache_dir) if f.endswith('.json')]
             total_size = sum(
                 os.path.getsize(os.path.join(self.cache_dir, f)) 

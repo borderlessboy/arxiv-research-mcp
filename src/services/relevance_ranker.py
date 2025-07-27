@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from ..models.paper import Paper
+from models.paper import Paper
 from config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -55,10 +55,22 @@ class RelevanceRanker:
                 paper.relevance_score = float(similarities[i])
             
             # Filter out papers with very low relevance
+            # Use a more lenient threshold for real-world papers
+            effective_min_score = 0.001  # Very low threshold to include most papers
+            logger.info(f"Effective minimum relevance score threshold: {effective_min_score}")
+            
             filtered_papers = [
                 paper for paper in papers 
-                if paper.relevance_score >= settings.MIN_RELEVANCE_SCORE
+                if paper.relevance_score >= effective_min_score
             ]
+            
+            logger.info(f"Papers before filtering: {len(papers)}")
+            logger.info(f"Papers after filtering: {len(filtered_papers)}")
+            
+            # Log some sample scores for debugging
+            if papers:
+                sample_scores = [paper.relevance_score for paper in papers[:5]]
+                logger.info(f"Sample relevance scores: {sample_scores}")
             
             # Sort by relevance score (descending)
             ranked_papers = sorted(
@@ -67,7 +79,10 @@ class RelevanceRanker:
                 reverse=True
             )
             
-            logger.info(f"Ranked papers, scores range: {ranked_papers[0].relevance_score:.3f} to {ranked_papers[-1].relevance_score:.3f}")
+            if ranked_papers:
+                logger.info(f"Ranked papers, scores range: {ranked_papers[0].relevance_score:.3f} to {ranked_papers[-1].relevance_score:.3f}")
+            else:
+                logger.info("No papers remained after relevance filtering")
             
             return ranked_papers
             

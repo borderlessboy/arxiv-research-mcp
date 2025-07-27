@@ -89,8 +89,7 @@ class PDFProcessor:
             return text_content.strip()
         
         # Run in thread pool to avoid blocking
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, extract)
+        return await asyncio.to_thread(extract)
     
     async def _extract_with_pdfplumber(self, pdf_content: bytes) -> str:
         """Extract text using pdfplumber."""
@@ -108,8 +107,7 @@ class PDFProcessor:
             return text_content.strip()
         
         # Run in thread pool to avoid blocking
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, extract)
+        return await asyncio.to_thread(extract)
     
     async def process_papers_batch(self, papers: list) -> list:
         """Process multiple papers concurrently."""

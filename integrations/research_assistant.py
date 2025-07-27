@@ -60,16 +60,17 @@ class ResearchAssistant:
         """
         try:
             # Check cache first
-            cache_key = f"{query}_{max_results}_{years_back}_{include_full_text}"
-            cached_results = self.cache_manager.get(cache_key)
+            cached_papers = await self.cache_manager.get_cached_results(query, years_back)
             
-            if cached_results:
+            if cached_papers:
                 logger.info(f"Using cached results for query: {query}")
-                return cached_results
+                # Format the cached papers
+                ranked_papers = self.ranker.rank_papers(cached_papers, query)
+                return self._format_results(ranked_papers, query)
             
             # Search arXiv
             logger.info(f"Searching arXiv for: {query}")
-            papers = await self.arxiv_client.search(
+            papers = await self.arxiv_client.search_papers(
                 query=query,
                 max_results=max_results,
                 years_back=years_back
@@ -80,9 +81,11 @@ class ResearchAssistant:
                 for paper in papers:
                     try:
                         if paper.pdf_url:
-                            paper.full_text = await self.pdf_processor.extract_text(paper.pdf_url)
+                            # Convert HttpUrl to string for PDFProcessor
+                            pdf_url_str = str(paper.pdf_url)
+                            paper.full_text = await self.pdf_processor.extract_text_from_url(pdf_url_str)
                     except Exception as e:
-                        logger.warning(f"Failed to extract text for {paper.id}: {e}")
+                        logger.warning(f"Failed to extract text for {paper.arxiv_id}: {e}")
                         paper.full_text = ""
             
             # Rank papers by relevance
@@ -92,7 +95,7 @@ class ResearchAssistant:
             formatted_results = self._format_results(ranked_papers, query)
             
             # Cache results
-            self.cache_manager.set(cache_key, formatted_results)
+            await self.cache_manager.cache_results(query, years_back, ranked_papers)
             
             return formatted_results
             
@@ -114,7 +117,7 @@ class ResearchAssistant:
             result += f"**Published:** {paper.published.strftime('%B %d, %Y')}\n\n"
             result += f"**Categories:** {', '.join(paper.categories)}\n\n"
             result += f"**URL:** {paper.url}\n\n"
-            result += f"**arXiv ID:** {paper.id}\n\n"
+            result += f"**arXiv ID:** {paper.arxiv_id}\n\n"
             result += f"**Relevance Score:** {paper.relevance_score:.3f}\n\n"
             result += f"**Abstract:**\n{paper.summary}\n\n"
             
@@ -128,7 +131,7 @@ class ResearchAssistant:
     async def get_cache_stats(self) -> str:
         """Get cache statistics."""
         try:
-            stats = self.cache_manager.get_stats()
+            stats = await self.cache_manager.get_cache_stats()
             return json.dumps(stats, indent=2)
         except Exception as e:
             logger.error(f"Error getting cache stats: {e}")
@@ -137,8 +140,8 @@ class ResearchAssistant:
     async def clear_cache(self) -> str:
         """Clear the cache."""
         try:
-            self.cache_manager.clear()
-            return "Cache cleared successfully"
+            cleared_count = await self.cache_manager.clear_cache()
+            return f"Cache cleared successfully. Removed {cleared_count} entries."
         except Exception as e:
             logger.error(f"Error clearing cache: {e}")
             return f"Error clearing cache: {str(e)}"

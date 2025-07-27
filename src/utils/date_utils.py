@@ -21,7 +21,13 @@ def parse_arxiv_date(date_string: str) -> datetime:
         
         # Another possible format
         elif '/' in date_string:
-            return datetime.strptime(date_string, "%m/%d/%Y")
+            try:
+                return datetime.strptime(date_string, "%m/%d/%Y")
+            except ValueError:
+                try:
+                    return datetime.strptime(date_string, "%d/%m/%Y")
+                except ValueError:
+                    pass
         
         else:
             # Default to current time if parsing fails

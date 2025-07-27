@@ -5,8 +5,11 @@ from unittest.mock import Mock, patch, AsyncMock
 from datetime import datetime, timedelta
 import httpx
 
-from src.services.arxiv_client import ArxivClient
-from src.models.paper import Paper
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+from services.arxiv_client import ArxivClient
+from models.paper import Paper
 
 
 class TestArxivClient:
@@ -133,7 +136,7 @@ class TestArxivClient:
         with patch('feedparser.parse') as mock_parse:
             mock_parse.return_value = mock_feed
             
-            with patch('src.services.arxiv_client.parse_arxiv_date') as mock_date:
+            with patch('services.arxiv_client.parse_arxiv_date') as mock_date:
                 mock_date.return_value = datetime.now()
                 
                 result = client._parse_arxiv_response(b"mock content")

@@ -5,7 +5,10 @@ import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 from mcp import types
 
-from src.server import app, search_arxiv_papers_tool, clear_cache_tool, get_cache_stats_tool
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+from server import app, search_arxiv_papers_tool, clear_cache_tool, get_cache_stats_tool
 
 
 class TestServer:
@@ -20,7 +23,7 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_list_tools(self):
         """Test that list_tools returns the expected tools."""
-        tools = await app.list_tools()
+        tools = app.list_tools()
         
         assert isinstance(tools, list)
         assert len(tools) == 3
@@ -33,10 +36,10 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_search_arxiv_papers_tool_success(self):
         """Test successful paper search."""
-        with patch('src.server.arxiv_client.search_papers') as mock_search, \
-             patch('src.server.cache_manager.get_cached_results') as mock_cache, \
-             patch('src.server.relevance_ranker.rank_papers') as mock_rank, \
-             patch('src.server.relevance_ranker.select_top_papers') as mock_select:
+        with patch('server.arxiv_client.search_papers') as mock_search, \
+             patch('server.cache_manager.get_cached_results') as mock_cache, \
+             patch('server.relevance_ranker.rank_papers') as mock_rank, \
+             patch('server.relevance_ranker.select_top_papers') as mock_select:
             
             # Mock cache miss
             mock_cache.return_value = None
@@ -66,9 +69,9 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_search_arxiv_papers_tool_cache_hit(self):
         """Test paper search with cache hit."""
-        with patch('src.server.cache_manager.get_cached_results') as mock_cache, \
-             patch('src.server.relevance_ranker.rank_papers') as mock_rank, \
-             patch('src.server.relevance_ranker.select_top_papers') as mock_select:
+        with patch('server.cache_manager.get_cached_results') as mock_cache, \
+             patch('server.relevance_ranker.rank_papers') as mock_rank, \
+             patch('server.relevance_ranker.select_top_papers') as mock_select:
             
             # Mock cache hit
             mock_papers = [Mock(title="Cached Paper", authors=["Cached Author"])]
@@ -95,8 +98,8 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_search_arxiv_papers_tool_no_results(self):
         """Test paper search with no results."""
-        with patch('src.server.arxiv_client.search_papers') as mock_search, \
-             patch('src.server.cache_manager.get_cached_results') as mock_cache:
+        with patch('server.arxiv_client.search_papers') as mock_search, \
+             patch('server.cache_manager.get_cached_results') as mock_cache:
             
             # Mock cache miss and no search results
             mock_cache.return_value = None
@@ -119,7 +122,7 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_clear_cache_tool_success(self):
         """Test successful cache clearing."""
-        with patch('src.server.cache_manager.clear_cache') as mock_clear:
+        with patch('server.cache_manager.clear_cache') as mock_clear:
             mock_clear.return_value = 5
             
             result = await clear_cache_tool()
@@ -133,7 +136,7 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_get_cache_stats_tool_success(self):
         """Test successful cache stats retrieval."""
-        with patch('src.server.cache_manager.get_cache_stats') as mock_stats:
+        with patch('server.cache_manager.get_cache_stats') as mock_stats:
             mock_stats.return_value = {
                 "enabled": True,
                 "total_entries": 10,
@@ -153,7 +156,7 @@ class TestServer:
     @pytest.mark.asyncio
     async def test_get_cache_stats_tool_disabled(self):
         """Test cache stats when cache is disabled."""
-        with patch('src.server.cache_manager.get_cache_stats') as mock_stats:
+        with patch('server.cache_manager.get_cache_stats') as mock_stats:
             mock_stats.return_value = {"enabled": False}
             
             result = await get_cache_stats_tool()
