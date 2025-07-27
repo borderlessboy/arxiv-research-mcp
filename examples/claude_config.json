@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+      "arxiv-research-server": {
+        "command": "python",
+        "args": ["/path/to/your/project/scripts/run_server.py"],
+        "env": {
+          "PYTHONPATH": "/path/to/your/project",
+          "LOG_LEVEL": "INFO"
+        }
+      }
+    }
+  }
