@@ -20,7 +20,7 @@ A comprehensive Model Context Protocol (MCP) server for searching and analyzing 
 
 ```bash
 # Clone the repository
-git clone https://github.com/arxiv-research-mcp/arxiv-research-mcp
+git clone https://github.com/borderlessboy/arxiv-research-mcp
 cd arxiv-research-mcp
 
 # Install dependencies
@@ -218,9 +218,9 @@ MIT License - see LICENSE file for details.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/arxiv-research-mcp/arxiv-research-mcp/issues)
-- **Documentation**: [GitHub Wiki](https://github.com/arxiv-research-mcp/arxiv-research-mcp/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/arxiv-research-mcp/arxiv-research-mcp/discussions)
+- **Issues**: [GitHub Issues](https://github.com/borderlessboy/arxiv-research-mcp/issues)
+- **Documentation**: [GitHub Wiki](https://github.com/borderlessboy/arxiv-research-mcp/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/borderlessboy/arxiv-research-mcp/discussions)
 
 ## Acknowledgments
 

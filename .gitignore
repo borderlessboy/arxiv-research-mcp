@@ -21,7 +21,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-tests/
+
 # Virtual environments
 .env
 .venv
@@ -52,6 +52,7 @@ cache/
 batch_outputs/
 *.log
 *.json.bak
+tests/
 
 # Jupyter
 .ipynb_checkpoints

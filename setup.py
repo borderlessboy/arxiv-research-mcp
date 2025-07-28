@@ -84,11 +84,11 @@ setup(
     description="A comprehensive MCP server for searching and analyzing academic papers from arXiv",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/arxiv-research-mcp/arxiv-research-mcp",
+    url="https://github.com/borderlessboy/arxiv-research-mcp",
     project_urls={
-        "Bug Reports": "https://github.com/arxiv-research-mcp/arxiv-research-mcp/issues",
-        "Source": "https://github.com/arxiv-research-mcp/arxiv-research-mcp",
-        "Documentation": "https://github.com/arxiv-research-mcp/arxiv-research-mcp/wiki",
+        "Bug Reports": "https://github.com/borderlessboy/arxiv-research-mcp/issues",
+        "Source": "https://github.com/borderlessboy/arxiv-research-mcp",
+        "Documentation": "https://github.com/borderlessboy/arxiv-research-mcp/wiki",
     },
     packages=find_packages(exclude=["tests*"]),
     classifiers=[
