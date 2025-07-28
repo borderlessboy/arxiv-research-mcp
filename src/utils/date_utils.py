@@ -39,11 +39,6 @@ def parse_arxiv_date(date_string: str) -> datetime:
         return datetime.now()
 
 
-def format_date_for_display(dt: datetime) -> str:
-    """Format datetime for display."""
-    return dt.strftime("%B %d, %Y")
-
-
 def is_recent_paper(paper_date: datetime, days_threshold: int = 30) -> bool:
     """Check if a paper is considered recent."""
     days_old = (datetime.now() - paper_date).days

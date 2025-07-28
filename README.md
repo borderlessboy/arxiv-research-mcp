@@ -40,7 +40,106 @@ python scripts/run_server.py
 streamlit run integrations/streamlit_app.py
 ```
 
+### Docker Usage
+
+The project includes a Dockerfile for easy containerized deployment.
+
+#### Quick Start with Docker
+
+```bash
+# Build the Docker image
+docker build -t arxiv-research-mcp .
+
+# Run the container
+docker run -p 8090:8090 arxiv-research-mcp
+```
+
+#### Docker with Custom Configuration
+
+```bash
+# Build with custom tag
+docker build -t arxiv-research-mcp:latest .
+
+# Run with custom port mapping
+docker run -p 8080:8090 arxiv-research-mcp
+
+# Run with volume for persistent cache
+docker run -p 8090:8090 -v $(pwd)/cache:/app/cache arxiv-research-mcp
+
+# Run with environment variables
+docker run -p 8090:8090 \
+  -e CACHE_ENABLED=true \
+  -e CACHE_TTL_HOURS=24 \
+  -e LOG_LEVEL=INFO \
+  arxiv-research-mcp
+```
+
+#### Docker Compose (Recommended)
+
+The project includes a `docker-compose.yml` file for easy deployment:
+
+```bash
+# Start the service
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the service
+docker-compose down
+```
+
+Or create a custom `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+services:
+  arxiv-research-mcp:
+    build: .
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./cache:/app/cache
+    environment:
+      - CACHE_ENABLED=true
+      - CACHE_TTL_HOURS=24
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+```
+
+```bash
+# Start the service
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the service
+docker-compose down
+```
+
+#### Docker Development
+
+```bash
+# Build for development with all dependencies
+docker build -t arxiv-research-mcp:dev .
+
+# Run with mounted source code for development
+docker run -p 8090:8090 \
+  -v $(pwd)/src:/app/src \
+  -v $(pwd)/config:/app/config \
+  -v $(pwd)/cache:/app/cache \
+  arxiv-research-mcp:dev
+```
+
 ## Installation Options
+
+### Docker Installation (Recommended)
+```bash
+# Quick start with Docker
+docker build -t arxiv-research-mcp .
+docker run -p 8090:8090 arxiv-research-mcp
+```
 
 ### Full Installation
 ```bash
@@ -170,6 +269,14 @@ Intelligent caching reduces API calls and improves response times.
 ### Batch Processing
 Process multiple research topics efficiently with the batch processor.
 
+### Docker Deployment
+The project includes a production-ready Dockerfile with:
+- Lightweight Python 3.11-slim base image
+- Optimized layer caching for faster builds
+- Pre-configured HTTP server on port 8090
+- Volume support for persistent caching
+- Environment variable configuration
+
 ## Development
 
 ### Running Tests
@@ -189,6 +296,22 @@ mypy src/
 python setup.py build
 ```
 
+### Docker Development
+```bash
+# Build development image
+docker build -t arxiv-research-mcp:dev .
+
+# Run with source code mounted for development
+docker run -p 8090:8090 \
+  -v $(pwd)/src:/app/src \
+  -v $(pwd)/config:/app/config \
+  -v $(pwd)/cache:/app/cache \
+  arxiv-research-mcp:dev
+
+# Run tests in Docker
+docker run arxiv-research-mcp:dev pytest tests/
+```
+
 ## Architecture
 
 ```
@@ -204,6 +327,18 @@ arxiv-research-mcp/
 └── examples/                  # Usage examples
 ```
 
+## Documentation
+
+For detailed documentation and guides, see the [Docs/](Docs/) directory:
+
+- **[MCPO Integration Guide](Docs/MCPO_INTEGRATION_GUIDE.md)** - Complete guide for MCPO integration
+- **[Port Running Guide](Docs/PORT_RUNNING_GUIDE.md)** - How to run the server on different ports
+- **[README for MCPO](Docs/README_MCPO.md)** - MCPO-specific documentation
+- **[Bug Fixes Summary](Docs/BUG_FIXES_SUMMARY.md)** - Summary of bug fixes and improvements
+- **[Code Cleanup Summary](Docs/CLEANUP_SUMMARY.md)** - Documentation of code cleanup and optimization
+- **[Docker Setup Guide](Docs/DOCKER_SETUP.md)** - Comprehensive Docker deployment guide
+- **[License Information](Docs/LICENSE_INFORMATION.md)** - License details and compliance guide
+
 ## Contributing
 
 1. Fork the repository
@@ -214,7 +349,38 @@ arxiv-research-mcp/
 
 ## License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Troubleshooting
+
+### Docker Issues
+
+**Port already in use:**
+```bash
+# Use a different port
+docker run -p 8080:8090 arxiv-research-mcp
+```
+
+**Permission denied:**
+```bash
+# Run with proper permissions
+sudo docker run -p 8090:8090 arxiv-research-mcp
+```
+
+**Build fails:**
+```bash
+# Clean build
+docker system prune -a
+docker build --no-cache -t arxiv-research-mcp .
+```
+
+**Container exits immediately:**
+```bash
+# Check logs
+docker logs <container_id>
+# Run interactively
+docker run -it arxiv-research-mcp /bin/bash
+```
 
 ## Support
 

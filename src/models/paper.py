@@ -5,12 +5,6 @@ from typing import List, Optional
 from pydantic import BaseModel, HttpUrl, Field
 
 
-class Author(BaseModel):
-    """Author information."""
-    name: str
-    affiliation: Optional[str] = None
-
-
 class Paper(BaseModel):
     """Research paper model."""
     

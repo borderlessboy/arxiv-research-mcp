@@ -11,7 +11,7 @@ from typing import Dict, List, Optional
 import aiofiles
 from pydantic import BaseModel
 
-from models.paper import Paper
+from src.models.paper import Paper
 from config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -140,44 +140,6 @@ class CacheManager:
         except Exception as e:
             logger.error(f"Error clearing cache: {e}")
             return cleared_count
-    
-    async def cleanup_expired_cache(self) -> int:
-        """Remove expired cache entries."""
-        if not self.enabled:
-            return 0
-            
-        cleaned_count = 0
-        try:
-            if not os.path.exists(self.cache_dir):
-                return 0
-                
-            for filename in os.listdir(self.cache_dir):
-                if filename.endswith('.json'):
-                    file_path = os.path.join(self.cache_dir, filename)
-                    
-                    try:
-                        async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
-                            content = await f.read()
-                            cache_entry_data = json.loads(content)
-                            cache_entry = CacheEntry(**cache_entry_data)
-                            
-                            if datetime.now() >= cache_entry.expires_at:
-                                os.remove(file_path)
-                                cleaned_count += 1
-                                
-                    except Exception:
-                        # Remove corrupted cache files
-                        os.remove(file_path)
-                        cleaned_count += 1
-            
-            if cleaned_count > 0:
-                logger.info(f"Cleaned up {cleaned_count} expired cache files")
-            
-            return cleaned_count
-            
-        except Exception as e:
-            logger.error(f"Error during cache cleanup: {e}")
-            return cleaned_count
     
     async def get_cache_stats(self) -> Dict:
         """Get cache statistics."""

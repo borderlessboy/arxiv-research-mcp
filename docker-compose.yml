@@ -1,0 +1,24 @@
+services:
+  arxiv-research-mcp:
+    build: .
+    container_name: arxiv-research-mcp
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./cache:/app/cache
+    environment:
+      - CACHE_ENABLED=true
+      - CACHE_TTL_HOURS=24
+      - LOG_LEVEL=INFO
+      - ARXIV_REQUEST_TIMEOUT=30
+      - ARXIV_MAX_RETRIES=3
+      - MAX_FULL_TEXT_LENGTH=50000
+      - DEFAULT_MAX_RESULTS=10
+      - DEFAULT_YEARS_BACK=4
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

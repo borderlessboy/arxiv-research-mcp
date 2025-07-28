@@ -10,8 +10,8 @@ import feedparser
 import httpx
 from asyncio_throttle import Throttler
 
-from models.paper import Paper
-from utils.date_utils import parse_arxiv_date
+from src.models.paper import Paper
+from src.utils.date_utils import parse_arxiv_date
 from config.settings import settings
 
 logger = logging.getLogger(__name__)

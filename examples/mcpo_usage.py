@@ -104,7 +104,7 @@ async def main():
     print("\nTo use with MCPO:")
     print("1. Start MCPO: mcpo --config mcpo_config.json")
     print("2. Use the server tools through MCPO clients")
-    print("3. Check MCPO_INTEGRATION_GUIDE.md for detailed instructions")
+    print("3. Check Docs/MCPO_INTEGRATION_GUIDE.md for detailed instructions")
 
 if __name__ == "__main__":
     asyncio.run(main()) 

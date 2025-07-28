@@ -114,7 +114,8 @@ class PDFProcessor:
         
         async def process_single_paper(paper):
             """Process a single paper."""
-            full_text = await self.extract_text_from_url(paper.pdf_url)
+            pdf_url_str = str(paper.pdf_url) if paper.pdf_url is not None else None
+            full_text = await self.extract_text_from_url(pdf_url_str) if pdf_url_str else None
             paper.full_text = full_text
             return paper
         

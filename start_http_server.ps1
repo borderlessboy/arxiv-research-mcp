@@ -1,4 +1,4 @@
-# PowerShell script to start the arXiv Research MCP Server on TCP port
+# PowerShell script to start the arXiv Research MCP Server on HTTP port
 # Usage: .\start_http_server.ps1 [--port 8080] [--host localhost]
 
 param(
@@ -7,7 +7,7 @@ param(
     [switch]$Debug
 )
 
-Write-Host "Starting arXiv Research MCP Server on TCP port..." -ForegroundColor Green
+Write-Host "Starting arXiv Research MCP Server on HTTP port..." -ForegroundColor Green
 Write-Host "Host: $HostName" -ForegroundColor Cyan
 Write-Host "Port: $Port" -ForegroundColor Cyan
 
@@ -50,7 +50,7 @@ if ($Debug) {
 
 # Start the MCP server on TCP port
 Write-Host "Starting MCP server on $HostName`:$Port..." -ForegroundColor Green
-Write-Host "The server will listen for MCP protocol messages via TCP" -ForegroundColor Cyan
+Write-Host "The server will listen for MCP protocol messages via HTTP" -ForegroundColor Cyan
 Write-Host "Press Ctrl+C to stop the server" -ForegroundColor Yellow
 Write-Host ""
 
