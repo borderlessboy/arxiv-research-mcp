@@ -8,8 +8,8 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from src.models.paper import Paper
-from src.config.settings import settings
+from models.paper import Paper
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
