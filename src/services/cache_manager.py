@@ -11,8 +11,8 @@ from typing import Dict, List, Optional
 import aiofiles
 from pydantic import BaseModel
 
-from models.paper import Paper
-from config.settings import settings
+from src.models.paper import Paper
+from src.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

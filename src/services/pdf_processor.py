@@ -10,7 +10,7 @@ import PyPDF2
 import pdfplumber
 from asyncio_throttle import Throttler
 
-from config.settings import settings
+from src.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
